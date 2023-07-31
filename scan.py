@@ -2,6 +2,11 @@
 
 
 
+import cv2
+import pytesseract
+import numpy as np
+
+
 
 from transform import four_point_transform
 
@@ -12,11 +17,6 @@ import cv2
 import imutils
 import os
 
-# ap = argparse.ArgumentParser()
-# ap.add_argument("-i", "--image", required=True,
-#                 help="Path to the image to be scanned")
-
-# args = vars(ap.parse_args())
 
 files = os.listdir(r"photos")
 
@@ -48,6 +48,7 @@ cnts = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 cnts = imutils.grab_contours(cnts)
 cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:5]
 
+
 for c in cnts:
     
     peri = cv2.arcLength(c, True)
@@ -56,7 +57,6 @@ for c in cnts:
     if len(approx) == 4:
         screenCnt = approx
         break
-
 
 # print("STEP 2: Find countours of paper")
 # cv2.drawContours(image, [screenCnt], -1, (0, 255, 0), 2)
@@ -73,21 +73,10 @@ warped = cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY)
 T = threshold_local(warped, 11, offset=10, method="gaussian")
 warped = (warped > T).astype("uint8") * 255
 
-cv2.imwrite(r"photos\\scanned.jpg", imutils.resize(warped, height=650))
+cv2.imwrite(r"photos\scanned.jpg", imutils.resize(warped, height=650))
 
-# print("STEP 3: Apply perspective transform")
 cv2.imshow("Original", imutils.resize(orig, height=650))
 cv2.imshow("Scanned", imutils.resize(warped, height=650))
 cv2.moveWindow("Scanned", 0, 0)
 
 cv2.waitKey(0)
-
-
-
-
-
-
-
-
-
-

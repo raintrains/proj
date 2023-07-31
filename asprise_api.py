@@ -2,35 +2,40 @@ import requests
 
 import json
 
-import pprint
-
 import os
 
-url_asprise = "https://ocr.asprise.com/api/v1/receipt"
-
-files = os.listdir(r"photos")
-
-if files:
-    files = [os.path.join(r"photos", file) for file in files]
-    files = [file for file in files if os.path.isfile(file)]
-    path_last_image = max(files, key=os.path.getctime)
 
 
-image = path_last_image
+def asprise_process(image):
 
-r = requests.post(url_asprise, data={ \
+    url_asprise = "https://ocr.asprise.com/api/v1/receipt"
+
+    # files = os.listdir(r"photos")
+
+    # if files:
+    #     files = [os.path.join(r"photos", file) for file in files]
+    #     files = [file for file in files if os.path.isfile(file)]
+    #     path_last_image = max(files, key=os.path.getctime)
+
+
+    data = {
+
+        "api_key": "TEST",
+        "recognizer": "auto",
+        "ref_no": "ocr_python_123",
+
+        }
+
+
+    r = requests.post(url_asprise, data, files={"file":open(image, "rb")})
+
+    try:
+        
+        with open("receipt1.json", "w", encoding="UTF-8") as file:
+            json.dump(r.json(), file, indent=4, ensure_ascii=False)
+
+        return("Обработано!")
     
-    "api_key": "TEST",
-    "recognizer": "auto",
-    "ref_no": "ocr_python_123",
-    }, \
-    files={"file": open(image, "rb")})
+    except:
 
-print(r.text)
-
-formated_data = pprint.pformat(r.text, indent=4)
-
-with open("receipt.json", "w", encoding="UTF-8") as file:
-    file.write(formated_data + "\n")
-# image.show()
-
+        return("Error!")
