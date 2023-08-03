@@ -31,7 +31,7 @@ def asprise_process(image):
 
     try:
         
-        with open("receipt1.json", "w", encoding="UTF-8") as file:
+        with open("receipt.json", "w", encoding="UTF-8") as file:
             json.dump(r.json(), file, indent=4, ensure_ascii=False)
 
         return("Обработано!")

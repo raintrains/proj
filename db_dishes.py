@@ -7,7 +7,7 @@ import json
 
 def create_db_dishes():
 
-    with open("receipt1.json", "r", encoding="UTF-8") as file:
+    with open("receipt.json", "r", encoding="UTF-8") as file:
         data = json.load(file)
 
     data_dict = {}

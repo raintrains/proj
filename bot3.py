@@ -12,7 +12,7 @@ from db_dishes import create_db_dishes, get_price_dish, get_items
 from db_clients import create_db_clients, update_db_clients, get_all
 from asprise_api import asprise_process
 
-from tabulate import tabulate
+from clear_data import refresh_bot
 
 bot = Bot(token=dotenv_values(".env").get("TOKEN"))
 storage = MemoryStorage()
@@ -30,6 +30,7 @@ class MyStates(StatesGroup):
     WAITING_FOR_NAME = State()
     WAITING_FOR_CHOICE = State()
     WAITING_CONTINUE_OR_NOT = State()
+    CLEAR_DATA = State()
 
 
 @dp.message_handler(commands=["start"])
@@ -38,15 +39,23 @@ async def on_start(message: types.Message):
     await MyStates.WAITING_FOR_PHOTO.set()
     create_db_clients()
 
+    
+
 
 @dp.message_handler(content_types=types.ContentTypes.PHOTO, state=MyStates.WAITING_FOR_PHOTO)
 async def handler_photo(message: types.Message, state: FSMContext):
     photo = message.photo[-1]
     await photo.download(r"photos/receipt.jpg")
     await message.answer("Фото успешно сохранено!")
-    await message.answer("Введите имя: ")
     # asprise_process(r"photos/receipt.jpg")
     # create_db_dishes()
+
+    await waiting_name(message, state)
+
+
+async def waiting_name(message: types.Message, state: FSMContext):
+    # await state.finish()
+    await message.answer("Введите имя: ")
     await MyStates.WAITING_FOR_NAME.set()
 
 
@@ -58,6 +67,7 @@ def create_inline_keyboard(items):
     ]
     buttons.append(types.InlineKeyboardButton("Готово", callback_data="done"))
     keyboard = types.InlineKeyboardMarkup(row_width=1).add(*buttons)
+
     return keyboard
 
 
@@ -70,20 +80,24 @@ async def input_name(message: types.Message, state: FSMContext):
     await message.reply("Выберите вариант из списка:", reply_markup=keyboard)
     await MyStates.WAITING_FOR_CHOICE.set()
 
+    
 
 @dp.callback_query_handler(lambda c: c.data not in ["done", "continue", "finalize"], state=MyStates.WAITING_FOR_CHOICE)
 async def choice_dish(callback_query: types.CallbackQuery, state: FSMContext):
     
     selected_dish_id = callback_query.data
-    selected_dish = get_price_dish(selected_dish_id)
+    dish_price = get_price_dish(selected_dish_id)
 
-    if isinstance(selected_dish, int):
-        async with state.proxy() as data_prices:
-            if "total_price" not in data_prices:
-                data_prices["total_price"] = 0
+    await callback_query.answer(f"Добавлено {selected_dish_id}")
 
-            data_prices["total_price"] += selected_dish
-        
+    if isinstance(dish_price, int):
+        async with state.proxy() as order_amount:
+            if "total_price" not in order_amount:
+                order_amount["total_price"] = 0
+
+            order_amount["total_price"] += dish_price
+
+    
         
 def buttons_finalize_continue():
     finalize_button = types.InlineKeyboardButton("Завершить", callback_data="finalize")
@@ -104,7 +118,7 @@ async def done_handler(callback_query: types.CallbackQuery, state: FSMContext):
         total = data.get("total_price")
         update_db_clients(selected_name, total)
 
-        await callback_query.message.answer(f"{selected_name}: {total}грн", reply_markup=buttons_finalize_continue())   # Выводиться как сообщение
+        await callback_query.message.answer(f"{selected_name}: {total} грн", reply_markup=buttons_finalize_continue())   # Выводиться как сообщение
 
         await MyStates.WAITING_CONTINUE_OR_NOT.set()
     
@@ -112,20 +126,49 @@ async def done_handler(callback_query: types.CallbackQuery, state: FSMContext):
 
         await state.finish()
 
+    
 
-@dp.callback_query_handler(lambda c: c.data == "continue")
+@dp.callback_query_handler(lambda c: c.data == "continue", state=MyStates.WAITING_CONTINUE_OR_NOT)
 async def continue_handler(callback_query: types.CallbackQuery, state: FSMContext):
-    await state.finish()
-    input_name()
+    await callback_query.answer()
+    await state.reset_state()
+    await waiting_name(callback_query.message, state)
+    
 
 @dp.callback_query_handler(lambda c: c.data == "finalize", state=MyStates.WAITING_CONTINUE_OR_NOT)
 async def finalize_handler(callback_query: types.CallbackQuery, state: FSMContext):
 
     items = get_all()
-    data = [(f"{name},{total} грн").split(",") for name, total in items]
-    result = tabulate(data, headers=["Имя", "Сумма"], tablefmt='fancy_grid')
+    data = [(f"{name} - {total} грн") for name, total in items]
+    
+    text = ""
 
-    await callback_query.message.answer(result)
+    for l in data:
+        text += l + "\n"
+        text += "\n"
+    # result = tabulate(data, headers=["Имя", "Сумма"], tablefmt='fancy_grid')
+    
+    # max_lenght_name = len(max([tupl[0] for tupl in items], key=len))
+    # max_total = len(str(max(tupl[1] for tupl in items)))
+    
+    button_close_session = types.InlineKeyboardButton("Начать с начала", callback_data="clear_data")
+    keyboard = types.InlineKeyboardMarkup().add(button_close_session)
+
+    await callback_query.answer()
+
+    await callback_query.message.answer(text, reply_markup=keyboard)
+
+    await MyStates.CLEAR_DATA.set()
+
+
+@dp.callback_query_handler(lambda c: c.data == "clear_data", state=MyStates.CLEAR_DATA)
+async def clear_data(callback_query: types.CallbackQuery, state: FSMContext):
+    
+    await state.reset_data()
+    await state.reset_state()   # Переделать, вместо reset_data и reset_state написать await state.reset() и проверить на работоспособность!
+    refresh_bot()
+    await callback_query.answer()
+    await on_start(callback_query.message)
 
 
 if __name__ == '__main__':
