@@ -1,28 +1,25 @@
 import sqlite3
-import json
 
-
-
+from data_parser_json import data_process_json
 
 
 def create_db_dishes():
 
-    with open("receipt.json", "r", encoding="UTF-8") as file:
-        data = json.load(file)
+    data_dict = data_process_json()
 
-    data_dict = {}
+    # data_dict = {}
 
-    for dish in data["receipts"][0]["items"]:
-        if dish["description"][-1].isdigit():
-            description = dish["description"][:-1]
-            amount = dish["description"][-1]
-            if "гость" not in description.lower() and "итого" not in description.lower():
-                if int(dish["description"][-1]) > 1:
-                    unit_price = int(dish["amount"]) / int(dish["description"][-1])
-                    data_dict.setdefault(description, round(unit_price))
-                else:
-                    unit_price = round(int(dish["amount"]))
-                    data_dict.setdefault(description, unit_price)
+    # for dish in data["receipts"][0]["items"]:
+    #     if dish["description"][-1].isdigit():
+    #         description = dish["description"][:-1]
+    #         amount = dish["description"][-1]
+    #         if "гость" not in description.lower() and "итого" not in description.lower():
+    #             if int(dish["description"][-1]) > 1:
+    #                 unit_price = int(dish["amount"]) / int(dish["description"][-1])
+    #                 data_dict.setdefault(description, round(unit_price))
+    #             else:
+    #                 unit_price = round(int(dish["amount"]))
+    #                 data_dict.setdefault(description, unit_price)
 
 
 
@@ -68,3 +65,5 @@ def get_price_dish(dish_name):
     
     
     return result[0]
+
+create_db_dishes()
