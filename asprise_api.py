@@ -2,21 +2,11 @@ import requests
 
 import json
 
-from db_dishes import create_db_dishes
-
 
 
 def asprise_process(image):
 
     url_asprise = "https://ocr.asprise.com/api/v1/receipt"
-
-#     # files = os.listdir(r"photos")
-
-#     # if files:
-#     #     files = [os.path.join(r"photos", file) for file in files]
-#     #     files = [file for file in files if os.path.isfile(file)]
-#     #     path_last_image = max(files, key=os.path.getctime)
-
 
     data = {
 
