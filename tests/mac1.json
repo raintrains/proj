@@ -1,0 +1,249 @@
+{
+    "ocr_type": "receipts",
+    "request_id": "P_212.83.144.108_llavwgh0_b92",
+    "ref_no": "ocr_python_123",
+    "file_name": "receipt1.jpg",
+    "request_received_on": 1692018119270,
+    "success": true,
+    "image_width": 1024,
+    "image_height": 1365,
+    "image_rotation": -0.034,
+    "recognition_completed_on": 1692018119786,
+    "receipts": [
+        {
+            "merchant_name": "237444526652",
+            "merchant_address": "3H AT 402404887 OH 3000406306",
+            "merchant_phone": null,
+            "merchant_website": null,
+            "merchant_tax_reg_no": null,
+            "merchant_company_reg_no": null,
+            "region": null,
+            "mall": null,
+            "country": "US",
+            "receipt_no": "237444526652",
+            "date": null,
+            "time": null,
+            "items": [
+                {
+                    "amount": 50.0,
+                    "category": null,
+                    "description": "ХЕППІ МІЛ ЧІЗБУРГЕР",
+                    "flags": " A",
+                    "qty": null,
+                    "remarks": null,
+                    "tags": null,
+                    "unitPrice": null
+                },
+                {
+                    "amount": 32.0,
+                    "category": null,
+                    "description": "ІГРАШКА ХМ",
+                    "flags": " A",
+                    "qty": null,
+                    "remarks": null,
+                    "tags": null,
+                    "unitPrice": null
+                },
+                {
+                    "amount": 35.0,
+                    "category": null,
+                    "description": "МАКСАНДІ ПОЛУНИЧНЕ",
+                    "flags": " A",
+                    "qty": null,
+                    "remarks": null,
+                    "tags": null,
+                    "unitPrice": null
+                },
+                {
+                    "amount": 8.0,
+                    "category": null,
+                    "description": "ПОЛИВА ПОЛУНИЧНА",
+                    "flags": " A",
+                    "qty": null,
+                    "remarks": null,
+                    "tags": null,
+                    "unitPrice": null
+                },
+                {
+                    "amount": 62.0,
+                    "category": null,
+                    "description": "БІГ МАК",
+                    "flags": " A",
+                    "qty": null,
+                    "remarks": null,
+                    "tags": null,
+                    "unitPrice": null
+                },
+                {
+                    "amount": 62.0,
+                    "category": null,
+                    "description": "СЕР КАРТОПЛЯ ФРI 2 =",
+                    "flags": " A",
+                    "qty": null,
+                    "remarks": null,
+                    "tags": null,
+                    "unitPrice": 31.0
+                },
+                {
+                    "amount": 38.0,
+                    "category": null,
+                    "description": "ЕСПРЕСО 2. 19.00 =",
+                    "flags": " A",
+                    "qty": null,
+                    "remarks": null,
+                    "tags": null,
+                    "unitPrice": null
+                },
+                {
+                    "amount": 25.0,
+                    "category": null,
+                    "description": "МАКПИРІГ ВИШНЕВИЙ",
+                    "flags": " A",
+                    "qty": null,
+                    "remarks": null,
+                    "tags": null,
+                    "unitPrice": null
+                },
+                {
+                    "amount": 29.0,
+                    "category": null,
+                    "description": "ПИРІГ КАРАНЕЛЬ-ПОКОЛАД",
+                    "flags": " A",
+                    "qty": null,
+                    "remarks": null,
+                    "tags": null,
+                    "unitPrice": null
+                },
+                {
+                    "amount": 341.0,
+                    "category": null,
+                    "description": "Сума",
+                    "flags": "",
+                    "qty": null,
+                    "remarks": null,
+                    "tags": null,
+                    "unitPrice": null
+                },
+                {
+                    "amount": 56.83,
+                    "category": null,
+                    "description": "A A = 20.00",
+                    "flags": "",
+                    "qty": null,
+                    "remarks": null,
+                    "tags": null,
+                    "unitPrice": null
+                },
+                {
+                    "amount": 341.0,
+                    "category": null,
+                    "description": "Картка",
+                    "flags": "",
+                    "qty": null,
+                    "remarks": null,
+                    "tags": null,
+                    "unitPrice": null
+                }
+            ],
+            "currency": "USD",
+            "total": 341.0,
+            "subtotal": null,
+            "tax": null,
+            "service_charge": null,
+            "tip": null,
+            "payment_method": null,
+            "payment_details": null,
+            "credit_card_type": null,
+            "credit_card_number": null,
+            "ocr_text": "             \"Макдональдз Юкрейн Лтд\"\n       Закусочна \"МакДональяз -Еднiсть\n             . Київ, Кiльцева дорога\n          (Солом'янський, Голосіївський,\n        Святошинський райони), буд. 14 -B\n          Гаряча лінія: 0-800-50-15-79\n                     237444526652\n            3H AT 402404887 OH 3000406306\n                Кабанова Г. Каса 30\n                 НОМЕР ЗАНОВЛЕННЯ:\n                        #####\n     ХЕППІ МІЛ ЧІЗБУРГЕР              50.00 A\n       * 1 ХМ ЧІЗБУРГЕР\n     ІГРАШКА ХМ                       32.00 A\n      * 1 КАРТКИ ХЕППІ\n      * 1 СІК ЯБЛУЧНИЙ ХМ\n      * 1 КАРТОПЛЯ ФРІ НАЛ ХМ\n    МАКСАНДІ ПОЛУНИЧНЕ                35.00 A\n      * 1 ПОЛИВА ПОЛУНИЧНА\n   ПОЛИВА ПОЛУНИЧНА                    8.00 A\n   БІГ МАК                            62.00 A\n   СЕР КАРТОПЛЯ ФРI 2. X 31.00 = 62.00 A\n   ЕСПРЕСО 2. 19.00 =                 38.00 A\n   МАКПИРІГ ВИШНЕВИЙ                  25.00 A\n  ПИРІГ КАРАНЕЛЬ-ПОКОЛАД              29.00 A\n  Сума                           341.00\n                      A A = 20.00       56.83\n  Картка                               341.00\n  Транзакцiя:\n  106072969636\n  АТ ОЩАДБАНК\n  ID ТЕРМІНАЛА: 50912551\n  ID ТОЧКИ: 20904506\n              ЧЕК 1950\n            ОПЛАТА ТОВАРУ\n СУНА:\n                          341.00 ГРН\n               УСПІШНО\n КОД ВІДПОВІДІ: 00\n MASTERCARD\n                                 2138",
+            "ocr_confidence": 91.96,
+            "width": 497,
+            "height": 1267,
+            "avg_char_width": 11.1099,
+            "avg_line_height": 24.4569,
+            "conf_amount": 89,
+            "source_locations": {
+                "receipt_no": [
+                    [
+                        {
+                            "y": 245,
+                            "x": 383
+                        },
+                        {
+                            "y": 237,
+                            "x": 513
+                        },
+                        {
+                            "y": 265,
+                            "x": 515
+                        },
+                        {
+                            "y": 273,
+                            "x": 385
+                        }
+                    ]
+                ],
+                "merchant_name": [
+                    [
+                        {
+                            "y": 244,
+                            "x": 376
+                        },
+                        {
+                            "y": 235,
+                            "x": 520
+                        },
+                        {
+                            "y": 266,
+                            "x": 521
+                        },
+                        {
+                            "y": 275,
+                            "x": 378
+                        }
+                    ]
+                ],
+                "doc": [
+                    [
+                        {
+                            "y": 47,
+                            "x": 134
+                        },
+                        {
+                            "y": 28,
+                            "x": 680
+                        },
+                        {
+                            "y": 1421,
+                            "x": 728
+                        },
+                        {
+                            "y": 1439,
+                            "x": 181
+                        }
+                    ]
+                ],
+                "merchant_address": [
+                    [
+                        {
+                            "y": 276,
+                            "x": 277
+                        },
+                        {
+                            "y": 256,
+                            "x": 611
+                        },
+                        {
+                            "y": 277,
+                            "x": 612
+                        },
+                        {
+                            "y": 302,
+                            "x": 279
+                        }
+                    ]
+                ]
+            }
+        }
+    ]
+}
