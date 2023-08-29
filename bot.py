@@ -35,6 +35,7 @@ class MyStates(StatesGroup):
 
 @dp.message_handler(commands=["start"])
 async def on_start(message: types.Message):
+    refresh_bot()
     await message.answer("Загрузите фото!")
     await MyStates.WAITING_FOR_PHOTO.set()
     create_db_clients()
@@ -47,8 +48,8 @@ async def handler_photo(message: types.Message, state: FSMContext):
     photo = message.photo[-1]
     await photo.download(r"photos/receipt.jpg")
     await message.answer("Фото успешно сохранено!")
-    # asprise_process(r"photos/receipt.jpg")
-    # create_db_dishes()
+    asprise_process(r"photos/receipt.jpg")
+    create_db_dishes()
 
     await waiting_name(message, state)
 
@@ -146,10 +147,6 @@ async def finalize_handler(callback_query: types.CallbackQuery, state: FSMContex
     for l in data:
         text += l + "\n"
         text += "\n"
-    # result = tabulate(data, headers=["Имя", "Сумма"], tablefmt='fancy_grid')
-    
-    # max_lenght_name = len(max([tupl[0] for tupl in items], key=len))
-    # max_total = len(str(max(tupl[1] for tupl in items)))
     
     button_close_session = types.InlineKeyboardButton("Начать с начала", callback_data="clear_data")
     keyboard = types.InlineKeyboardMarkup().add(button_close_session)
@@ -165,7 +162,10 @@ async def finalize_handler(callback_query: types.CallbackQuery, state: FSMContex
 async def clear_data(callback_query: types.CallbackQuery, state: FSMContext):
     
     await state.reset_data()
-    await state.reset_state()   # Переделать, вместо reset_data и reset_state написать await state.reset() и проверить на работоспособность!
+    await state.reset_state()
+    
+    # await state.reset()
+
     refresh_bot()
     await callback_query.answer()
     await on_start(callback_query.message)

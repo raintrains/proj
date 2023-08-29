@@ -5,7 +5,7 @@ from data_parser_json import data_process_json
 
 def create_db_dishes():
 
-    data_dict = data_process_json()
+    data_dict = data_process_json("receipt.json")
 
     conn = sqlite3.connect("menu.db")
 
@@ -48,4 +48,4 @@ def get_price_dish(dish_name):
     
     return result[0]
 
-create_db_dishes()
+# create_db_dishes()

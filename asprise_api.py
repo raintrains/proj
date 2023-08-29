@@ -30,4 +30,4 @@ def asprise_process(image):
 
         return("Error!")
 
-asprise_process(r"photos/receipt.jpg")
+# asprise_process(r"photos/receipt.jpg")

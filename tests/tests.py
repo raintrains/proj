@@ -16,6 +16,8 @@ def test_sazha_data():
     
     result_sazha = data_process_json("tests/sazha.json")
 
+    print(result_sazha)
+
     expected_sazha = {
         
         'Jagermeister': 85,
@@ -29,7 +31,8 @@ def test_sazha_data():
         'Вареники з кроликом': 145, 
         'Деруни з грибами': 92, 
         'Цезар класичний з філе': 162, 
-        'Гнiздечко з вершк.coyco': 115, 
+        'Гнiздечко з вершк.coyco': 115,
+        'Соус вв': 19,
         'Грiмберген блонд': 90, 
         'Риба дорадо': 125
         
@@ -37,6 +40,7 @@ def test_sazha_data():
     
     assert expected_sazha == result_sazha 
 
+# test_sazha_data()
 
 def test_mac_1_data():
 

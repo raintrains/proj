@@ -19,6 +19,8 @@ def data_process_json(path_json):
     
     pattern = r'^([^0-9]+)\s*(\d+(?:\.\d+)?)?\s*'
 
+    pattern_for_check_digits = re.compile(r'\d')
+
     for d in data["receipts"][0]["items"]:
         
         name_dish = "".join([symbol for symbol in d["description"]]).rstrip()
@@ -38,71 +40,79 @@ def data_process_json(path_json):
         if name_dish.lower() in ["сумма", "сума", "итого", "sum"]:
             break
         
-        try:
         
-            if d["unitPrice"] is not None:
-                
-                name_dish = match.group(1)
-
-                data_dict.setdefault(re.sub(r'\d+', "", name_dish).rstrip().capitalize(), int(d["unitPrice"]))
+        
+        if d["unitPrice"] is not None:
             
+            name_dish = match.group(1)
+
+            data_dict.setdefault(re.sub(r'\d+', "", name_dish).rstrip().capitalize(), int(d["unitPrice"]))
+        
+        else:
+            
+            # print(name_dish)
+            if name_dish.split()[-1].isdigit():
+                # print("func 1", end="\n")
+                # print(name_dish)
+
+                amount = int(name_dish.split()[-1]) if 0 < int(name_dish.split()[-1]) < 10 else 1
+                price_dish //= amount
+                # print(f"Количество: {amount}")
+                # print(price_dish)
+                # print(name_dish)
+            
+
+                name_dish = re.sub(r'\d+', "", name_dish).rstrip()
+                
+
+            elif  name_dish.split()[-1][-1].isdigit():
+                # print("func 2", end="\n")
+                # print(name_dish)
+
+                amount = int(name_dish.split()[-1][-1]) if 0 < int(name_dish.split()[-1][-1]) < 10 else 1
+                # print(f"Количество: {amount}")
+                price_dish //= amount
+
+                # print(name_dish)
+
+                name_dish = match.group(1).rstrip()
+                if name_dish in data_dict.keys():
+                    break
+                # print(name_dish)
+
             else:
+                pattern = r'^([^0-9]+)\s*(\d+(?:\.\d+)?)?\s*'
+                match = re.search(pattern, name_dish)
+
+                # print(name_dish)
                 
-                if name_dish.split()[-1].isdigit():
-                    # print("func 1", end="\n")
-                    # print(name_dish)
-
-                    amount = int(name_dish.split()[-1]) if 0 < int(name_dish.split()[-1]) < 10 else 1
-                    # print(f"Количество: {amount}")
-                    price_dish //= amount
-
-                    name_dish = re.sub(r'\d+', "", name_dish).rstrip()
-                    
-
-                elif  name_dish.split()[-1][-1].isdigit():
-                    # print("func 2", end="\n")
-                    # print(name_dish)
-
-                    amount = int(name_dish.split()[-1][-1]) if 0 < int(name_dish.split()[-1][-1]) < 10 else 1
-                    # print(f"Количество: {amount}")
-                    price_dish //= amount
-
-                    # print(name_dish)
-
-                    name_dish = match.group(1).rstrip()
-
-                    if name_dish in data_dict:
-                        break
-
-                else:
+                name_dish = match.group(1).rstrip()
                 
-                    pattern = r'^([^0-9]+)\s*(\d+(?:\.\d+)?)?\s*'
-                    match = re.search(pattern, name_dish)
+                if match.group(2) is not None:
+                    second_half = float(match.group(2))
+                
 
+                    if second_half:
 
-                    name_dish = match.group(1).rstrip()
-
-                    if match.group(2):
-                        price_dish //= int(match.group(2))
-
-                data_dict[name_dish.capitalize()] = data_dict.get(name_dish.capitalize(), 0) + price_dish
+                        if 1 < int(second_half) <= 10:
+                            amount = int(second_half)
+                            price_dish //= amount
+                        else:
+                            unit_price = int(second_half)
+                            price_dish = unit_price
+                    else:
+                        price_dish = int(d['amount'])
+                # print(name_dish)
             
+            data_dict[name_dish.capitalize()] = data_dict.get(name_dish.capitalize(), 0) + price_dish            
     
         
-        except:
-            pass
+        
     
     return data_dict
 
 # print(data_process_json("receipt.json"))
-for i in data_process_json("receipt.json").items():
-    print(*i, end="\n")
 
-'''
-# отсутствует Кава Американо
-# Картопля"по-домашньому" 250  ---> Картопля"по-домашньому" 125
-# Пампушка з часничком 150  ---> Пампушка з часничком 15
-# Ребра bbq 1  ---> Ребра bbq 520
-# Ворель у прованських травах 191  ---> Ворель у прованських травах 250
-# Рулька свинна з тушкованою 400  ---> Рулька свинна з тушкованою 160 
-'''
+# print(data_process_json("mac1.json"))
+# for i in data_process_json("receipt.json").items():
+#     print(*i, end="\n")
